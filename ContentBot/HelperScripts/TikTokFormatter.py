@@ -1,11 +1,16 @@
 from moviepy.editor import VideoFileClip
 from moviepy.video.fx import crop as cp
+from moviepy.video.io.ffmpeg_tools import ffmpeg_extract_subclip
+
+def extract_clip(input_path, output_path, starting_time, ending_time):
+    with VideoFileClip(input_path) as video:
+        new = video.subclip(starting_time, ending_time)
+        new.write_videofile(output_path, audio_codec=False, preset="veryslow")
+
 
 def convert_to_tiktok_format(input_path, output_path):
     # Load the video
     clip = VideoFileClip(input_path)
-
-    
 
     # Define TikTok's preferred dimensions and aspect ratio
     tiktok_width = 1080
@@ -29,6 +34,6 @@ def convert_to_tiktok_format(input_path, output_path):
     clip = clip.resize((tiktok_width, tiktok_height))
 
     # Export the video
-    clip.write_videofile(output_path, codec="libx264", fps=30)
+    clip.write_videofile(output_path, codec="libx264", fps=30, preset="veryslow")
 
 

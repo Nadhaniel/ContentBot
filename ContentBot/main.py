@@ -1,11 +1,7 @@
-import os
-from dotenv import load_dotenv
-load_dotenv()
+import dotenv
+dotenv.load_dotenv()
 
-from ContentBot.HelperScripts import RedditScraper as rs
-from ContentBot.HelperScripts import SqlDatabase as sq
-from ContentBot.HelperScripts import TextToAudio as tta
 
-tta.create_audio("", "test_clip.mp3")
-#print(test)
+submission = rs.get_top_month_submissions(31)
 
+print(submission[30])

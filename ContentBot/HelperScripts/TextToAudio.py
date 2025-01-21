@@ -27,8 +27,12 @@ def calculate_time_of_audio(input_text):
 
     return (estimated_duration_minutes, estimated_duration_seconds)
 
-def create_audio(text_input_str, file_name):
-
+def create_audio(text_input_str, file_name, directory=None):
+    if directory == None:
+        print("[WARNING][TextToAudio.py] - NO DIRECTORY SPECIFIED AUDIO WILL BE WRITTEN TO DEFAULT PATH: " + audio_clips_directory)
+        directory = audio_clips_directory
+    if not (os.path.exists(directory)):
+        raise ValueError("Directory for clip storage does not exist")
     audio_length = calculate_time_of_audio(text_input_str)
     cost_estimate = calculate_cost(text_input_str)
     print("Audio length estimated: Minutes - " + str(audio_length[0]) + " Seconds - " + str(audio_length[1]))
@@ -44,11 +48,9 @@ def create_audio(text_input_str, file_name):
             )
             print("----------Audio generated----------")
 
-            if not(os.path.exists(audio_clips_directory)):
-                ValueError("Directory for clip storage does not exist")
-            else:
-                output_file = os.path.join(audio_clips_directory, file_name)
-                response.write_to_file(output_file)
+
+            output_file = os.path.join(directory, file_name)
+            response.write_to_file(output_file)
 
         except openai.OpenAIError as e:
             print("Error generating audio file from OpenAI", e)
